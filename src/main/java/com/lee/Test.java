@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @description: TODO-Eden.Lee
+ * @description: 测试文件代码
  * @author: Eden.Lee/李明
  * @company: 朴新教育
  * @date: 2019/5/8 19:23
@@ -28,12 +28,17 @@ public class Test {
             // 获取sqlSession
             SqlSession session = sqlSessionFactory.openSession();
 
-            User user;
+            User user = null;
+            // 第二种方式: 执行更清晰和类型安全的代码
+            UserDao userDao = session.getMapper(UserDao.class);
+            user = userDao.getById(1);
+            System.out.println(user);
+
 
             /*try {
-                *//**
-                 * 第一种方式: 直接执行已映射的 SQL 语句
-                 *//*
+             *//**
+             * 第一种方式: 直接执行已映射的 SQL 语句
+             *//*
                 String statement = "com.luoxn28.dao.UserDao.getById";
                 user = session.selectOne(statement, 1);
                 System.out.println(user);
@@ -41,13 +46,6 @@ public class Test {
             finally {
                 session.close();
             }*/
-
-            /**
-             * 第二种方式: 执行更清晰和类型安全的代码
-             */
-            UserDao userDao = session.getMapper(UserDao.class);
-            user = userDao.getById(1);
-            System.out.println(user);
         }
 
 

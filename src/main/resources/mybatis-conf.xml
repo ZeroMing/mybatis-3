@@ -3,16 +3,43 @@
 
 <configuration>
 
+    <!-- 属性配置 -->
+    <properties>
+        <property name="" value=""/>
+        
+    </properties>
+
+    
+    <!-- 属性配置 -->
     <settings>
+        <!-- 自增主键 -->
+        <setting name="useGeneratedKeys" value="true"/>
+        <!-- 驼峰转换开启 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 缓存开启 -->
         <setting name="cacheEnabled" value="true"/>
+        <!-- 懒加载-->
         <setting name="lazyLoadingEnabled" value="false"/>
-        <!--setting name="logImpl" value="STDOUT_LOGGING"/--> <!-- 日志 -->
+        <!-- 日志 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
     </settings>
 
+    <!--  別名信息 配置-->
     <typeAliases>
         <typeAlias type="com.lee.entity.User" alias="User"/>
     </typeAliases>
 
+
+    <!-- 类型转换器配置 -->
+    <typeHandlers>
+        
+    </typeHandlers>
+
+    <!-- 插件配置 -->
+    <!--<plugins>
+        <plugin interceptor=""></plugin>
+    </plugins>-->
+    
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC" /> <!-- 声明使用那种事务管理机制 JDBC/MANAGED -->
@@ -26,6 +53,7 @@
         </environment>
     </environments>
 
+    <!-- Mappers 映射文件  -->
     <mappers>
         <mapper resource="userMapper.xml"/>
     </mappers>

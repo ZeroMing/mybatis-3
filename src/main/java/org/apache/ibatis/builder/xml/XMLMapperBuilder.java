@@ -93,11 +93,14 @@ public class XMLMapperBuilder extends BaseBuilder {
     if (!configuration.isResourceLoaded(resource)) {
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
+      // 绑定命名空间
       bindMapperForNamespace();
     }
-
+    // 解析在configurationElement函数中处理resultMap时其extends属性指向的父对象还没被处理的<resultMap>节点
     parsePendingResultMaps();
+    // 解析在configurationElement函数中处理cache-ref时其指向的对象不存在的<cache>节点(如果cache-ref先于其指向的cache节点加载就会出现这种情况)
     parsePendingCacheRefs();
+    // 同上，如果cache没加载的话处理statement时也会抛出异常
     parsePendingStatements();
   }
 
@@ -117,6 +120,8 @@ public class XMLMapperBuilder extends BaseBuilder {
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
       resultMapElements(context.evalNodes("/mapper/resultMap"));
       sqlElement(context.evalNodes("/mapper/sql"));
+
+      //  select|insert|update|delete 声明语句
       buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing Mapper XML. The XML location is '" + resource + "'. Cause: " + e, e);
@@ -132,6 +137,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   private void buildStatementFromContext(List<XNode> list, String requiredDatabaseId) {
     for (XNode context : list) {
+      // XMLStatementBuilder 负责解析查询语句
       final XMLStatementBuilder statementParser = new XMLStatementBuilder(configuration, builderAssistant, context, requiredDatabaseId);
       try {
         statementParser.parseStatementNode();
