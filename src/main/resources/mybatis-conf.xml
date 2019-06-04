@@ -30,15 +30,15 @@
     </typeAliases>
 
 
-    <!-- 类型转换器配置 -->
-    <typeHandlers>
-        
-    </typeHandlers>
 
     <!-- 插件配置 -->
     <!--<plugins>
         <plugin interceptor=""></plugin>
     </plugins>-->
+
+
+    <!--<objectFactory type=""></objectFactory>-->
+    <!--<objectWrapperFactory type=""></objectWrapperFactory>-->
     
     <environments default="development">
         <environment id="development">
@@ -52,6 +52,15 @@
             </dataSource>
         </environment>
     </environments>
+
+    <!--<reflectorFactory type=""></reflectorFactory>
+    <databaseIdProvider type=""></databaseIdProvider>-->
+
+
+    <!-- 类型转换器配置 -->
+    <typeHandlers>
+
+    </typeHandlers>
 
     <!-- Mappers 映射文件  -->
     <mappers>

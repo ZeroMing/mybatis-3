@@ -52,9 +52,13 @@ import org.apache.ibatis.type.JdbcType;
  */
 public class XMLConfigBuilder extends BaseBuilder {
 
+  /** 是否被解析标记 */
   private boolean parsed;
+  /** 解析器 */
   private final XPathParser parser;
+  /** 上下文环境 */
   private String environment;
+  /** 映射工厂，用来反射生成对象 */
   private final ReflectorFactory localReflectorFactory = new DefaultReflectorFactory();
 
   public XMLConfigBuilder(Reader reader) {
@@ -90,6 +94,10 @@ public class XMLConfigBuilder extends BaseBuilder {
     this.parser = parser;
   }
 
+  /**
+   * 解析配置文件
+   * @return
+   */
   public Configuration parse() {
     if (parsed) {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
@@ -102,21 +110,31 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
+      // 1、常规属性配置节点处理
       propertiesElement(root.evalNode("properties"));
+      // 2、
       Properties settings = settingsAsProperties(root.evalNode("settings"));
       loadCustomVfs(settings);
       loadCustomLogImpl(settings);
+      // 类型别名节点处理
       typeAliasesElement(root.evalNode("typeAliases"));
+      // 插件节点处理
       pluginElement(root.evalNode("plugins"));
+      // 对象工程节点处理
       objectFactoryElement(root.evalNode("objectFactory"));
+      // 对象包装节点处理
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
+      // 反射工厂节点处理
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
+      // 上下文环境节点处理
       environmentsElement(root.evalNode("environments"));
+      // 数据库ID提供器节点处理
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
+      // 类型处理器节点处理
       typeHandlerElement(root.evalNode("typeHandlers"));
-      // 解析Mapper映射关系
+      // 解析Mapper映射文件节点
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
@@ -132,6 +150,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
     for (Object key : props.keySet()) {
       if (!metaConfig.hasSetter(String.valueOf(key))) {
+        // 非配置类中定义的属性值会报错-找不到Key
         throw new BuilderException("The setting " + key + " is not known.  Make sure you spelled it correctly (case sensitive).");
       }
     }

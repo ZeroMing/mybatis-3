@@ -41,7 +41,9 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
 /**
  * This class represents a cached set of class definition information that
  * allows for easy mapping between property names and getter/setter methods.
- *
+ * 这个类代表一个类定义信息的缓存集合。
+ * 允许在属性名称和getter/setter之间简单的映射。
+ * 反射器，用于从缓存中构造对象
  * @author Clinton Begin
  */
 public class Reflector {

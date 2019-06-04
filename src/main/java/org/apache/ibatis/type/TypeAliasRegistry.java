@@ -33,6 +33,7 @@ import org.apache.ibatis.io.ResolverUtil;
 import org.apache.ibatis.io.Resources;
 
 /**
+ * 为何int 代表 java.lang.String
  * @author Clinton Begin
  */
 public class TypeAliasRegistry {
@@ -41,7 +42,6 @@ public class TypeAliasRegistry {
 
   public TypeAliasRegistry() {
     registerAlias("string", String.class);
-
     registerAlias("byte", Byte.class);
     registerAlias("long", Long.class);
     registerAlias("short", Short.class);
@@ -152,6 +152,7 @@ public class TypeAliasRegistry {
       throw new TypeException("The parameter alias cannot be null");
     }
     // issue #748
+    // 全部转为小写
     String key = alias.toLowerCase(Locale.ENGLISH);
     if (typeAliases.containsKey(key) && typeAliases.get(key) != null && !typeAliases.get(key).equals(value)) {
       throw new TypeException("The alias '" + alias + "' is already mapped to the value '" + typeAliases.get(key).getName() + "'.");

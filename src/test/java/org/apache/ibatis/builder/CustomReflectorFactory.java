@@ -19,4 +19,9 @@ import org.apache.ibatis.reflection.DefaultReflectorFactory;
 
 public class CustomReflectorFactory extends DefaultReflectorFactory {
 
+    /**
+     * 供用户自定义实现
+     *
+     */
+
 }

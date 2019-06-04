@@ -27,6 +27,13 @@ import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 
 /**
  * 建造者模式
+ * 不完整建造者模式
+ *
+ * 真正意义上的建造者模式:
+ * 1、Product          产品
+ * 2、Builder          抽象建造者
+ * 3、ConcreteBuilder  具体的建造者
+ * 4、Director         指挥者
  * Builds {@link SqlSession} instances.
  *
  * @author Clinton Begin

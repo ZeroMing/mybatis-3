@@ -95,6 +95,8 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * 元始天尊 - 配置类
+ *
  * @author Clinton Begin
  */
 public class Configuration {
@@ -142,6 +144,7 @@ public class Configuration {
    */
   protected Class<?> configurationFactory;
 
+  /** 映射注册器 */
   protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
   protected final InterceptorChain interceptorChain = new InterceptorChain();
   protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry();
