@@ -32,9 +32,9 @@
 
 
     <!-- 插件配置 -->
-    <!--<plugins>
-        <plugin interceptor=""></plugin>
-    </plugins>-->
+    <plugins>
+        <plugin interceptor="com.lee.ExamplePlugin"></plugin>
+    </plugins>
 
 
     <!--<objectFactory type=""></objectFactory>-->
@@ -58,9 +58,9 @@
 
 
     <!-- 类型转换器配置 -->
-    <typeHandlers>
+    <!--<typeHandlers>
 
-    </typeHandlers>
+    </typeHandlers>-->
 
     <!-- Mappers 映射文件  -->
     <mappers>

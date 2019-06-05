@@ -203,10 +203,14 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void pluginElement(XNode parent) throws Exception {
     if (parent != null) {
       for (XNode child : parent.getChildren()) {
+        // 获取拦截器节点
         String interceptor = child.getStringAttribute("interceptor");
+        // 获取子节点键值对配置
         Properties properties = child.getChildrenAsProperties();
+        // 解析为拦截器类
         Interceptor interceptorInstance = (Interceptor) resolveClass(interceptor).newInstance();
         interceptorInstance.setProperties(properties);
+        // 添加到拦截器链中
         configuration.addInterceptor(interceptorInstance);
       }
     }

@@ -36,10 +36,10 @@ public class Test {
 
 
             /*try {
-             *//**
-             * 第一种方式: 直接执行已映射的 SQL 语句
-             *//*
-                String statement = "com.luoxn28.dao.UserDao.getById";
+                 *//**
+                 * 第一种方式: 直接执行已映射的 SQL 语句
+                 *//*
+                String statement = "com.lee.dao.UserDao.getById";
                 user = session.selectOne(statement, 1);
                 System.out.println(user);
             }

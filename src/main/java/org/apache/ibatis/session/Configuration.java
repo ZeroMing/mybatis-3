@@ -588,6 +588,12 @@ public class Configuration {
     return newExecutor(transaction, defaultExecutorType);
   }
 
+  /**
+   * TAG-Eden.Lee 执行器
+   * @param transaction
+   * @param executorType
+   * @return
+   */
   public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
     executorType = executorType == null ? defaultExecutorType : executorType;
     executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
@@ -602,7 +608,9 @@ public class Configuration {
     if (cacheEnabled) {
       executor = new CachingExecutor(executor);
     }
-    //
+    // TAG-Eden.Lee 问题:
+    //  拦截器为何会拦截 Executor，ParameterHandler，ResultSetHandler，StatementHandler的方法
+    //  原因在这里::: 使用配置好的拦截器链对该对象进行包装
     executor = (Executor) interceptorChain.pluginAll(executor);
     return executor;
   }

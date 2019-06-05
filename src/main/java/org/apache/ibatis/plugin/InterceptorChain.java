@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 拦截器链
  * @author Clinton Begin
  */
 public class InterceptorChain {
@@ -28,6 +29,7 @@ public class InterceptorChain {
 
   public Object pluginAll(Object target) {
     for (Interceptor interceptor : interceptors) {
+      // 执行拦截器
       target = interceptor.plugin(target);
     }
     return target;
