@@ -103,6 +103,7 @@ public class XMLConfigBuilder extends BaseBuilder {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
     parsed = true;
+    // 从根节点 configuration 开始解析
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
@@ -112,41 +113,47 @@ public class XMLConfigBuilder extends BaseBuilder {
       //issue #117 read properties first
       // 1、常规属性配置节点处理
       propertiesElement(root.evalNode("properties"));
-      // 2、
+      // 2、settings 是复合节点。解析settings下的键值对
       Properties settings = settingsAsProperties(root.evalNode("settings"));
       loadCustomVfs(settings);
       loadCustomLogImpl(settings);
-      // 类型别名节点处理
+      // 3、类型别名节点处理
       typeAliasesElement(root.evalNode("typeAliases"));
-      // 插件节点处理
+      // 4、插件节点处理
       pluginElement(root.evalNode("plugins"));
-      // 对象工程节点处理
+      // 5、对象工程节点处理
       objectFactoryElement(root.evalNode("objectFactory"));
-      // 对象包装节点处理
+      // 6、对象包装节点处理
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
-      // 反射工厂节点处理
+      // 7、反射工厂节点处理
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
-      // 上下文环境节点处理
+      // 8、上下文环境节点处理
       environmentsElement(root.evalNode("environments"));
-      // 数据库ID提供器节点处理
+      // 9、数据库ID提供器节点处理
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
-      // 类型处理器节点处理
+      // 10、类型处理器节点处理。注册到 typeHandlerRegistry
       typeHandlerElement(root.evalNode("typeHandlers"));
-      // 解析Mapper映射文件节点
+      // 11、解析Mapper映射文件节点
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
     }
   }
 
+  /**
+   * 校验键值对是否符合org.apache.ibatis.session.Configuration内置的标准
+   * @param context
+   * @return
+   */
   private Properties settingsAsProperties(XNode context) {
     if (context == null) {
       return new Properties();
     }
     Properties props = context.getChildrenAsProperties();
     // Check that all settings are known to the configuration class
+    // 检查所有的配置是否存在configuration类中
     MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
     for (Object key : props.keySet()) {
       if (!metaConfig.hasSetter(String.valueOf(key))) {
@@ -157,6 +164,12 @@ public class XMLConfigBuilder extends BaseBuilder {
     return props;
   }
 
+  /**
+   * VFS含义是虚拟文件系统；主要是通过程序能够方便读取本地文件系统、FTP文件系统等系统中的文件资源。
+   * Mybatis中提供了VFS这个配置，主要是通过该配置可以加载自定义的虚拟文件系统应用程序。
+   * @param props
+   * @throws ClassNotFoundException
+   */
   private void loadCustomVfs(Properties props) throws ClassNotFoundException {
     String value = props.getProperty("vfsImpl");
     if (value != null) {
@@ -171,6 +184,10 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 加载自定义的Log实现
+   * @param props
+   */
   private void loadCustomLogImpl(Properties props) {
     Class<? extends Log> logImpl = resolveClass(props.getProperty("logImpl"));
     configuration.setLogImpl(logImpl);
@@ -264,6 +281,10 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 设置 Configuration 对应的属性
+   * @param props
+   */
   private void settingsElement(Properties props) {
     configuration.setAutoMappingBehavior(AutoMappingBehavior.valueOf(props.getProperty("autoMappingBehavior", "PARTIAL")));
     configuration.setAutoMappingUnknownColumnBehavior(AutoMappingUnknownColumnBehavior.valueOf(props.getProperty("autoMappingUnknownColumnBehavior", "NONE")));

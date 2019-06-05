@@ -252,7 +252,7 @@ public class Resources {
 
   /**
    * Loads a class
-   *
+   * 加载类
    * @param className - the class to fetch
    * @return The loaded class
    * @throws ClassNotFoundException If the class cannot be found (duh!)
