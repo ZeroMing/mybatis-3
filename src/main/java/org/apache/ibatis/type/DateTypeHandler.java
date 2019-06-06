@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
+ * 日期类型转换
  * @author Clinton Begin
  */
 public class DateTypeHandler extends BaseTypeHandler<Date> {

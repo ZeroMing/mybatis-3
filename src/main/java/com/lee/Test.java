@@ -23,16 +23,26 @@ public class Test {
             String resouce = "mybatis-conf.xml";
             InputStream is = Resources.getResourceAsStream(resouce);
 
-            // 构建sqlSession工厂
+            // 构建sqlSession工厂。它的作用域应该是应用作用域。应该只创建一次，不需要重复创建，应该是单例模式创建。
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
             // 获取sqlSession
             SqlSession session = sqlSessionFactory.openSession();
 
             User user = null;
-            // 第二种方式: 执行更清晰和类型安全的代码
-            UserDao userDao = session.getMapper(UserDao.class);
-            user = userDao.getById(1);
-            System.out.println(user);
+            try{
+                // 第二种方式: 执行更清晰和类型安全的代码
+                UserDao userDao = session.getMapper(UserDao.class);
+                user = userDao.getById(1);
+                System.out.println(user);
+                user = userDao.getById(1);
+                System.out.println(user);
+                user = userDao.getById(1);
+                System.out.println(user);
+            }finally {
+                // 确保 SqlSession 关闭的标准模式
+                session.close();
+            }
+
 
 
             /*try {

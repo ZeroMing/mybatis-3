@@ -16,7 +16,7 @@
         <setting name="useGeneratedKeys" value="true"/>
         <!-- 驼峰转换开启 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <!-- 缓存开启 -->
+        <!--这个配置使全局的映射器(二级缓存)启用或禁用缓存-->
         <setting name="cacheEnabled" value="true"/>
         <!-- 懒加载-->
         <setting name="lazyLoadingEnabled" value="false"/>
@@ -66,5 +66,7 @@
     <mappers>
         <mapper resource="userMapper.xml"/>
     </mappers>
+
+
 
 </configuration>
