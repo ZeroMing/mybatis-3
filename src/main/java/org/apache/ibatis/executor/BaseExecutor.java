@@ -197,15 +197,21 @@ public abstract class BaseExecutor implements Executor {
     if (closed) {
       throw new ExecutorException("Executor was closed.");
     }
+    // 知识点::: mybatis如何辨别出两个查询是相同的查询???
     CacheKey cacheKey = new CacheKey();
+    // 1、MappedStatement的ID
     cacheKey.update(ms.getId());
+    // 2、数据查询范围
     cacheKey.update(rowBounds.getOffset());
     cacheKey.update(rowBounds.getLimit());
+    // 3、boundSql获取的sql字符串
     cacheKey.update(boundSql.getSql());
     List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
     TypeHandlerRegistry typeHandlerRegistry = ms.getConfiguration().getTypeHandlerRegistry();
+    // 4、传给Statement参数的值，遍历设置进cacheKey
     // mimic DefaultParameterHandler logic
     for (ParameterMapping parameterMapping : parameterMappings) {
+      // 参数模式 != OUT
       if (parameterMapping.getMode() != ParameterMode.OUT) {
         Object value;
         String propertyName = parameterMapping.getProperty();
@@ -213,15 +219,18 @@ public abstract class BaseExecutor implements Executor {
           value = boundSql.getAdditionalParameter(propertyName);
         } else if (parameterObject == null) {
           value = null;
+          // 类型处理器中包含 处理指定参数的处理器
         } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
           value = parameterObject;
         } else {
+          // 元对象
           MetaObject metaObject = configuration.newMetaObject(parameterObject);
           value = metaObject.getValue(propertyName);
         }
         cacheKey.update(value);
       }
     }
+    // 5、如果上下文环境不为空，会将上下文ID 放进去
     if (configuration.getEnvironment() != null) {
       // issue #176
       cacheKey.update(configuration.getEnvironment().getId());

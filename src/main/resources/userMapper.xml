@@ -3,6 +3,7 @@
 
 <mapper namespace="com.lee.dao.UserDao">
 
+    <cache eviction="LRU" flushInterval="100000" readOnly="true" size="1024"/>
     <select id="getById" parameterType="int" resultType="User">
         SELECT * FROM user WHERE id=#{id};
     </select>

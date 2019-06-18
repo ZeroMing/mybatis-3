@@ -60,6 +60,7 @@ public class CacheKey implements Cloneable, Serializable {
   public void update(Object object) {
     int baseHashCode = object == null ? 1 : ArrayUtil.hashCode(object);
 
+    // 疑问点??? 为何如此计算
     count++;
     checksum += baseHashCode;
     baseHashCode *= count;

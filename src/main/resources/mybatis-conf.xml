@@ -12,11 +12,15 @@
     
     <!-- 属性配置 -->
     <settings>
+
+        <!-- 一级本地缓存，默认开启 ，SESSION级别 -->
+        <setting name="localCacheScope" value="SESSION"/>
+
         <!-- 自增主键 -->
         <setting name="useGeneratedKeys" value="true"/>
         <!-- 驼峰转换开启 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <!--这个配置使全局的映射器(二级缓存)启用或禁用缓存-->
+        <!--这个配置使全局的映射器(二级缓存)启用或禁用缓存ccc -->
         <setting name="cacheEnabled" value="true"/>
         <!-- 懒加载-->
         <setting name="lazyLoadingEnabled" value="false"/>
@@ -61,6 +65,12 @@
     <!--<typeHandlers>
 
     </typeHandlers>-->
+
+
+
+
+
+
 
     <!-- Mappers 映射文件  -->
     <mappers>

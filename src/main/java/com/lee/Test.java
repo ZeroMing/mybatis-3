@@ -29,13 +29,14 @@ public class Test {
             SqlSession session = sqlSessionFactory.openSession();
 
             User user = null;
+            UserDao userDao = null;
             try{
                 // 第二种方式: 执行更清晰和类型安全的代码
-                UserDao userDao = session.getMapper(UserDao.class);
-                user = userDao.getById(1);
-                System.out.println(user);
-                user = userDao.getById(1);
-                System.out.println(user);
+                 userDao = session.getMapper(UserDao.class);
+//                user = userDao.getById(1);
+//                System.out.println(user);
+//                user = userDao.getById(1);
+//                System.out.println(user);
                 user = userDao.getById(1);
                 System.out.println(user);
             }finally {
@@ -43,8 +44,10 @@ public class Test {
                 session.close();
             }
 
-
-
+            SqlSession sqlSession2 = sqlSessionFactory.openSession();
+            userDao = sqlSession2.getMapper(UserDao.class);
+            user = userDao.getById(1);
+            System.out.println(user);
             /*try {
                  *//**
                  * 第一种方式: 直接执行已映射的 SQL 语句
