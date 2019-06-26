@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Offline entity resolver for the MyBatis DTDs.
- *
+ * XML
  * @author Clinton Begin
  * @author Eduardo Macarron
  */

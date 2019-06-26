@@ -47,6 +47,7 @@ public class XPathParser {
 
   private final Document document;
   private boolean validation;
+  // 实体解析器
   private EntityResolver entityResolver;
   private Properties variables;
   private XPath xpath;
@@ -229,6 +230,7 @@ public class XPathParser {
   private Document createDocument(InputSource inputSource) {
     // important: this must only be called AFTER common constructor
     try {
+      // 文件构造工厂
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       factory.setValidating(validation);
 

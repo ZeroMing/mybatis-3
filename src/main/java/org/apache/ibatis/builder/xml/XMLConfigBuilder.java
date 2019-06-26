@@ -121,17 +121,29 @@ public class XMLConfigBuilder extends BaseBuilder {
       typeAliasesElement(root.evalNode("typeAliases"));
       // 4、插件节点处理
       pluginElement(root.evalNode("plugins"));
-      // 5、对象工程节点处理
+      // 5、对象工厂节点处理
       objectFactoryElement(root.evalNode("objectFactory"));
-      // 6、对象包装节点处理
+      // 6、对象包装工厂节点处理
+      // 对象包装器工厂主要用来包装返回result对象，比如说可以用来设置某些敏感字段脱敏或者加密等。
+      // 默认对象包装器工厂是DefaultObjectWrapperFactory，也就是不使用包装器工厂
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
       // 7、反射工厂节点处理
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
       // 8、上下文环境节点处理
+      /*
+      环境可以说是mybatis-config配置文件中最重要的部分，它类似于spring和maven里面的profile，
+      允许给开发、生产环境同时配置不同的environment，根据不同的环境加载不同的配置，
+      这也是常见的做法，如果在SqlSessionFactoryBuilder调用期间没有传递使用哪个环境的话，默认会使用一个名为default”的环境。
+      找到对应的environment之后，就可以加载事务管理器和数据源了。
+      事务管理器和数据源类型这里都用到了类型别名，JDBC/POOLED都是在mybatis内置提供的，
+      在Configuration构造器执行期间注册到TypeAliasRegister。
+      mybatis内置提供JDBC和MANAGED两种事务管理方式，前者主要用于简单JDBC模式，后者主要用于容器管理事务，
+      一般使用JDBC事务管理方式。mybatis内置提供JNDI、POOLED、UNPOOLED三种数据源工厂，一般情况下使用POOLED数据源
+       */
       environmentsElement(root.evalNode("environments"));
-      // 9、数据库ID提供器节点处理
+      // 9、数据库厂商标识加载处理
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
       // 10、类型处理器节点处理。注册到 typeHandlerRegistry
       typeHandlerElement(root.evalNode("typeHandlers"));
@@ -321,9 +333,12 @@ public class XMLConfigBuilder extends BaseBuilder {
       for (XNode child : context.getChildren()) {
         String id = child.getStringAttribute("id");
         if (isSpecifiedEnvironment(id)) {
+          // 事务工厂
           TransactionFactory txFactory = transactionManagerElement(child.evalNode("transactionManager"));
+          // 数据源公差昂
           DataSourceFactory dsFactory = dataSourceElement(child.evalNode("dataSource"));
           DataSource dataSource = dsFactory.getDataSource();
+          // 上下文建造者
           Environment.Builder environmentBuilder = new Environment.Builder(id)
               .transactionFactory(txFactory)
               .dataSource(dataSource);
@@ -404,6 +419,8 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void mapperElement(XNode parent) throws Exception {
     if (parent != null) {
       for (XNode child : parent.getChildren()) {
+
+
         if ("package".equals(child.getName())) {
           String mapperPackage = child.getStringAttribute("name");
           configuration.addMappers(mapperPackage);
