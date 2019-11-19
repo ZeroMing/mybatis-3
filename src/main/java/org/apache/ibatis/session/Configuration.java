@@ -150,11 +150,14 @@ public class Configuration {
   protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry();
   protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
   protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
-
+  /** mappedStatement 映射对象 */
   protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection")
       .conflictMessageProducer((savedValue, targetValue) ->
           ". please check " + savedValue.getResource() + " and " + targetValue.getResource());
+
+
   protected final Map<String, Cache> caches = new StrictMap<>("Caches collection");
+  /** ResultMap 映射对象  */
   protected final Map<String, ResultMap> resultMaps = new StrictMap<>("Result Maps collection");
   protected final Map<String, ParameterMap> parameterMaps = new StrictMap<>("Parameter Maps collection");
   protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<>("Key Generators collection");
@@ -608,7 +611,7 @@ public class Configuration {
     if (cacheEnabled) {
       executor = new CachingExecutor(executor);
     }
-    // TAG-Eden.Lee 问题:
+
     //  拦截器为何会拦截 Executor，ParameterHandler，ResultSetHandler，StatementHandler的方法
     //  原因在这里::: 使用配置好的拦截器链对该对象进行包装
     executor = (Executor) interceptorChain.pluginAll(executor);
