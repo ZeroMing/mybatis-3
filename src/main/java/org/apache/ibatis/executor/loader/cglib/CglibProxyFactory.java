@@ -118,6 +118,7 @@ public class CglibProxyFactory implements ProxyFactory {
 
     public static Object createProxy(Object target, ResultLoaderMap lazyLoader, Configuration configuration, ObjectFactory objectFactory, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
       final Class<?> type = target.getClass();
+      // 回调
       EnhancedResultObjectProxyImpl callback = new EnhancedResultObjectProxyImpl(type, lazyLoader, configuration, objectFactory, constructorArgTypes, constructorArgs);
       Object enhanced = crateProxy(type, callback, constructorArgTypes, constructorArgs);
       PropertyCopier.copyBeanProperties(type, target, enhanced);

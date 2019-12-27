@@ -34,12 +34,19 @@ public class Plugin implements InvocationHandler {
   private final Interceptor interceptor;
   private final Map<Class<?>, Set<Method>> signatureMap;
 
+
   private Plugin(Object target, Interceptor interceptor, Map<Class<?>, Set<Method>> signatureMap) {
     this.target = target;
     this.interceptor = interceptor;
     this.signatureMap = signatureMap;
   }
 
+  /**
+   *
+   * @param target 被代理对象
+   * @param interceptor 拦截器，主要用来执行org.apache.ibatis.plugin.Interceptor#intercept(org.apache.ibatis.plugin.Invocation)
+   * @return
+   */
   public static Object wrap(Object target, Interceptor interceptor) {
     Map<Class<?>, Set<Method>> signatureMap = getSignatureMap(interceptor);
     // 类
@@ -47,6 +54,7 @@ public class Plugin implements InvocationHandler {
     // 所有接口
     Class<?>[] interfaces = getAllInterfaces(type, signatureMap);
     if (interfaces.length > 0) {
+      // 创建代理类
       return Proxy.newProxyInstance(
           type.getClassLoader(),
           interfaces,
@@ -55,11 +63,15 @@ public class Plugin implements InvocationHandler {
     return target;
   }
 
+
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
+      // 得到目标类所包含的所有方法,method.getDeclaringClass()得到目标类
       Set<Method> methods = signatureMap.get(method.getDeclaringClass());
+      // 找到注解的方法
       if (methods != null && methods.contains(method)) {
+        // 拦截方法，并执行注入到interceptor中的方法
         return interceptor.intercept(new Invocation(target, method, args));
       }
       return method.invoke(target, args);

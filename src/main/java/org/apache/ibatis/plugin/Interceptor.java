@@ -22,10 +22,30 @@ import java.util.Properties;
  */
 public interface Interceptor {
 
+  /**
+   * 执行拦截逻辑的方法
+   * @param invocation
+   * @return
+   * @throws Throwable
+   */
   Object intercept(Invocation invocation) throws Throwable;
 
+  /**
+   * 返回增强的对象
+   * @param target 被代理对象
+   * @return 增强的target
+   */
   Object plugin(Object target);
 
+  /**
+   * 获取property name="someProperty" 的值，得到配置文件的值
+   * <plugins>
+   *   <plugin interceptor="org.mybatis.example.ExamplePlugin">
+   *     <property name="someProperty" value="100"/>
+   *   </plugin>
+   * </plugins>
+   * @param properties
+   */
   void setProperties(Properties properties);
 
 }
