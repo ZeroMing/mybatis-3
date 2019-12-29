@@ -24,20 +24,25 @@
         <setting name="cacheEnabled" value="true"/>
         <!-- 懒加载-->
         <setting name="lazyLoadingEnabled" value="false"/>
+        <!--<setting name="aggressiveLazyLoading" value="true"/>-->
         <!-- 日志 -->
         <setting name="logImpl" value="STDOUT_LOGGING" />
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
     </settings>
 
     <!--  別名信息 配置-->
     <typeAliases>
-        <typeAlias type="com.lee.entity.User" alias="User"/>
+        <typeAlias type="org.mybatis.leolee.entity.User" alias="user"/>
+        <typeAlias type="org.mybatis.leolee.entity.Address" alias="address"/>
+        <typeAlias type="org.mybatis.leolee.entity.Job" alias="job"/>
     </typeAliases>
 
 
 
     <!-- 插件配置 -->
     <plugins>
-        <plugin interceptor="com.lee.ExamplePlugin"></plugin>
+        <plugin interceptor="org.mybatis.leolee.LeoLeePlugin"></plugin>
     </plugins>
 
 
@@ -68,13 +73,11 @@
 
 
 
-
-
-
-
     <!-- Mappers 映射文件  -->
     <mappers>
         <mapper resource="userMapper.xml"/>
+        <mapper resource="addressMapper.xml"/>
+        <mapper resource="jobMapper.xml"/>
     </mappers>
 
 

@@ -1,4 +1,4 @@
-package com.lee;
+package org.mybatis.leolee;
 
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -21,7 +21,7 @@ import java.util.Properties;
                 ResultHandler.class }),
         //@Signature(type= ResultSetHandler.class,method="handleResultSets",args= Statement.class)
 })
-public class ExamplePlugin implements Interceptor {
+public class LeoLeePlugin implements Interceptor {
 
 
     @Override

@@ -1,4 +1,4 @@
-package com.lee;
+package org.mybatis.leolee;
 
 /**
  * @description: 建造者测试

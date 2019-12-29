@@ -40,7 +40,7 @@ public interface Interceptor {
   /**
    * 获取property name="someProperty" 的值，得到配置文件的值
    * <plugins>
-   *   <plugin interceptor="org.mybatis.example.ExamplePlugin">
+   *   <plugin interceptor="org.mybatis.example.LeoLeePlugin">
    *     <property name="someProperty" value="100"/>
    *   </plugin>
    * </plugins>
